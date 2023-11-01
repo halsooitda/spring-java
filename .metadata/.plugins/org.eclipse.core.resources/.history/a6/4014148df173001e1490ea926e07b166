@@ -1,0 +1,36 @@
+package com.myweb.www.service;
+
+import java.util.List;
+
+import com.myweb.www.domain.BoardDTO;
+import com.myweb.www.domain.BoardVO;
+import com.myweb.www.domain.PagingVO;
+
+public interface BoardService {
+
+//	int register(BoardVO bvo);
+
+	//PagingVO pagingVO 추가
+	List<BoardVO> getList(PagingVO pagingVO);
+
+//	BoardVO getDetail(long bno);
+
+	//int readCount(long bno);
+
+	int remove(long bno);
+
+//	int modify(BoardVO bvo);
+
+	int getTotalCount(PagingVO pagingVO);
+
+	int register(BoardDTO bdto);
+
+	BoardDTO getDetailFile(long bno);
+
+	int removeFile(String uuid);
+
+	int modify(BoardDTO bdto);
+
+	int count(List<BoardVO> list);
+
+}

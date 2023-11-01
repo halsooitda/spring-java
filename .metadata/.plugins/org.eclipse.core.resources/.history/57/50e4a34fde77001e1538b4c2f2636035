@@ -1,0 +1,17 @@
+package com.myweb.www.exception;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@ControllerAdvice
+public class CommonExceptionAdvice {
+	
+	@ExceptionHandler(NoHandlerFoundException.class)						//404에서 사용되는 exception
+	public String handler404(NoHandlerFoundException ex) { //404에서 사용되는 exception
+		return "custom404"; //해당하는 오류가 발생하면 이 페이지로 넘어가기
+	}
+}

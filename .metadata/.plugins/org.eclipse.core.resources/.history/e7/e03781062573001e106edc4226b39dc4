@@ -1,0 +1,132 @@
+package com.myweb.www.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+import com.myweb.www.domain.BoardDTO;
+import com.myweb.www.domain.BoardVO;
+import com.myweb.www.domain.FileVO;
+import com.myweb.www.domain.PagingVO;
+import com.myweb.www.repository.BoardDAO;
+import com.myweb.www.repository.FileDAO;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class BoardServiceImpl implements BoardService {
+	@Inject
+	private BoardDAO bdao;
+	
+	@Inject
+	private FileDAO fdao;
+	
+
+//	@Override
+//	public int register(BoardVO bvo) {
+//		return bdao.insert(bvo);
+//	}
+
+	@Override
+	//PagingVO pagingVO 추가
+	public List<BoardVO> getList(PagingVO pagingVO) {
+		return bdao.getList(pagingVO);
+	}
+
+	@Override
+	public BoardVO getDetail(long bno) {
+		int cnt = 1;
+		bdao.readCount(bno, cnt); //cnt대신 그냥 1넣어도 됨
+		return bdao.getDetail(bno);
+	}
+
+//	@Override
+//	public int readCount(long bno) {
+//		return bdao.readCount(bno);
+//	}
+
+	@Override
+	public int modify(BoardVO bvo) {
+		//수정할 때 들어가는 부당 read_count 2개 빼주기
+		//read_count -2
+		int cnt = -2;
+		bdao.readCount(bvo.getBno(), cnt); //cnt대신 그냥 -2넣어도 됨
+		return bdao.update(bvo);
+	}
+
+	@Override
+	public int remove(long bno) {
+		return bdao.delete(bno);
+	}
+
+	@Override
+	public int getTotalCount(PagingVO pagingVO) {
+		return bdao.getTotalCount(pagingVO);
+	}
+
+	@Override
+	public int register(BoardDTO bdto) {
+		//bvo, flist 가져와서 각자 DB에 저장
+		int isUp = bdao.insert(bdto.getBvo()); //insert후 bno 발급됨
+		
+		//null처리
+		if(bdto.getFlist() == null) {
+			isUp *= 1;
+		}else {
+			//board등록이 잘 됐고, 넣어야 하는 파일값이 존재한다면
+			if(isUp > 0 && bdto.getFlist().size() > 0) {
+				long bno = bdao.selectOneBno(); //방금 등록한 글의 bno구하기
+				//모든 파일에 bno를 세팅해줘야 함
+				for(FileVO fvo : bdto.getFlist()) {
+					fvo.setBno(bno);
+					isUp*= fdao.insertFile(fvo);
+				}
+			}			
+		}
+		return isUp;
+	}
+
+	@Override
+	public BoardDTO getDetailFile(long bno) {
+		int cnt = 1;
+		bdao.readCount(bno, cnt);
+		
+		BoardDTO bdto = new BoardDTO(bdao.getDetail(bno), fdao.getFileList(bno));
+		return bdto;
+	}
+
+	//파일 수정용 파일삭제요청
+	@Override
+	public int removeFile(String uuid) {
+		return fdao.removeFile(uuid);
+	}
+
+	@Override
+	public int modify(BoardDTO bdto) {
+		//수정할 때 들어가는 부당 read_count 2개 빼주기
+		//read_count -2
+		int cnt = -2;
+		bdao.readCount(bdto.getBvo().getBno(), cnt); //cnt대신 그냥 -2넣어도 됨
+		int isOk = bdao.update(bdto.getBvo());
+		
+		//null처리
+		if(bdto.getFlist() == null) {
+			isOk *= 1;
+		}else {
+			//board등록이 잘 됐고, 넣어야 하는 파일값이 존재한다면
+			if(isOk > 0 && bdto.getFlist().size() > 0) {
+				long bno = bdao.selectOneBno(); //방금 등록한 글의 bno구하기
+				//모든 파일에 bno를 세팅해줘야 함
+				for(FileVO fvo : bdto.getFlist()) {
+					fvo.setBno(bno);
+					isOk*= fdao.insertFile(fvo);
+				}
+			}			
+		}
+		return isOk;
+	}
+
+}

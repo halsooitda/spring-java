@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Member List</title>
+<style type="text/css">
+	table{
+		margin: 20px;
+	}
+</style>
+</head>
+<body>
+<jsp:include page="../common/header.jsp"/>
+<jsp:include page="../common/nav.jsp"/>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>E-MAIL</th>
+			<th>NICKNAME</th>
+			<th>REG</th>
+			<th>LAST_LOGIN</th>
+		</tr>
+	</thead>
+	<tbody>
+		<c:forEach items="${list }" var="mvo">
+			<tr>
+				<td>${mvo.email }</td>
+				<td>${mvo.nickName }</td>
+				<td>${mvo.regAt }</td>
+				<td>${mvo.lastLogin }</td>
+			</tr>
+		</c:forEach>
+	</tbody>
+</table>
+<jsp:include page="../common/footer.jsp"/>
+</body>
+</html>

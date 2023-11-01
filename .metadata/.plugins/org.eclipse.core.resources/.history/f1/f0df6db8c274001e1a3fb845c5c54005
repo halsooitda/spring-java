@@ -1,0 +1,35 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Log In</title>
+<style type="text/css">
+	form{
+		margin: 20px; 
+	}
+	input{
+		width: 400px;
+	}
+</style>
+</head>
+<body>
+<jsp:include page="../common/header.jsp"/>
+<jsp:include page="../common/nav.jsp"/>
+
+<form action="/member/login" method="post">
+	<div class="form-floating mb-3">
+	  <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
+	  <label for="floatingInput">Email address</label>
+	</div>
+	<div class="form-floating">
+	  <input type="password" class="form-control" name="pwd" id="floatingPassword" placeholder="Password">
+	  <label for="floatingPassword">Password</label>
+	</div>
+	<button type="submit" class="btn btn-secondary">LogIn</button>
+</form>
+
+<jsp:include page="../common/footer.jsp"/>
+</body>
+</html>

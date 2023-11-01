@@ -1,0 +1,31 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Member List</title>
+</head>
+<body>
+<table class="table">
+	<thead>
+		<tr>
+			<th>E-MAIL</th>
+			<th>NICKNAME</th>
+			<th>REG</th>
+			<th>LAST_LOGIN</th>
+		</tr>
+	</thead>
+	<tbody>
+		<c:forEach items="${list }" var="mvo">
+			<tr>
+				<td>${mvo.email }</td>
+				<td>${mvo.nickName }</td>
+				<td>${mvo.regAt }</td>
+				<td>${mvo.lastLogin }</td>
+			</tr>
+		</c:forEach>
+	</tbody>
+</table>
+</body>
+</html>

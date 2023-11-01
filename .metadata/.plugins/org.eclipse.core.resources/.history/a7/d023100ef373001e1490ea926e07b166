@@ -1,0 +1,8 @@
+package com.myweb.www.controller;
+
+import org.springframework.stereotype.Component;
+
+@Component //내가 만든 클래스 객체임
+public class FileSweeper {
+	
+}
